@@ -6,7 +6,7 @@ import { router } from "./infra/http/routes";
 const app = express();
 
 app.use(express.json());
-app.use(router);
+app.use("/api/boards", router);
 
 const handler = serverless(app);
 

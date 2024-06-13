@@ -25,7 +25,7 @@ type ColumnProps = {
   cards: CardProps[];
 };
 
-type ContentProps = {
+export type ContentProps = {
   id: string;
   name: string;
   isPublic: boolean;

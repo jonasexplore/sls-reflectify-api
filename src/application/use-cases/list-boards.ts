@@ -1,3 +1,4 @@
+import { ErrorMapper } from "@/common/error";
 import { BoardRepository } from "@/infra/repositories/board";
 
 export class ListBoardsUseCase {
@@ -5,10 +6,15 @@ export class ListBoardsUseCase {
 
   async execute() {
     try {
+      console.log("ListBoardsUseCase > params", {});
+
       const output = await this.repository.list();
+
+      console.log("ListBoardsUseCase > success");
+
       return output;
     } catch (error) {
-      console.error(error);
+      console.error(ErrorMapper.map(error));
       throw error;
     }
   }

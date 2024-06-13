@@ -4,12 +4,15 @@ import { v4 as uuid } from "uuid";
 import { BoardEntity } from "@/common/entity";
 import { BoardRepository } from "@/infra/repositories/board";
 import { PREFIXS } from "@/common/enums";
+import { ErrorMapper } from "@/common/error";
 
 export class CreateBoardUseCase {
   constructor(private readonly repository: BoardRepository) {}
 
   async execute(props: { name: string; isPublic: boolean }) {
     try {
+      console.log("CreateBoardUseCase > params", { ...props });
+
       const id = uuid();
       const currentDate = dayjs().toISOString();
 
@@ -27,9 +30,11 @@ export class CreateBoardUseCase {
 
       await this.repository.save(entity);
 
+      console.log("CreateBoardUseCase > success");
+
       return entity;
     } catch (error) {
-      console.error(error);
+      console.error(ErrorMapper.map(error));
       throw error;
     }
   }
