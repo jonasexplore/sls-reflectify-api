@@ -4,13 +4,47 @@ frameworkVersion: "3"
 plugins:
   - serverless-offline
 
+package:
+  patterns:
+    - src/**
+    - "!.git/**"
+
+custom:
+  dependsOn:
+    - ServiceSecretsManager
+  secrets: ${ssm:/aws/reference/secretsmanager/${self:service}}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:Scan
+        - dynamodb:Query
+      Resource:
+        - BoardsControlTable
+    - Effect: Allow
+      Action:
+        - secretsmanager:GetSecretValue
+      Resource:
+        - ServiceSecretsManager
+
 provider:
   name: aws
   runtime: nodejs20.x
+  environment: $(file(serverless/environment.yml))
+  iam:
+    role:
+      statements: ${self:custom.iamRoleStatements}
 
 functions:
   api:
     handler: dist/index.handler
-    timeout: 99999
-    events:
-      - httpApi: "*"
+    timeout: 30
+    memorySize: 512
+    events: $(file(serverless/events.yml))
+
+resources:
+  - $(file(serverless/resources/dynamodb.yml))
+  - $(file(serverless/resources/secrets-manager.yml))

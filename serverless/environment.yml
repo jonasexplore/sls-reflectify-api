@@ -1,0 +1,3 @@
+environment:
+  STAGE: ${env:STAGE, self:custom.secrets.STAGE}
+  REGION: ${env:REGION, self:custom.secrets.REGION}

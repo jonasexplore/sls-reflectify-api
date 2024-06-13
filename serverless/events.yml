@@ -1,0 +1,16 @@
+events:
+  - httpApi:
+      method: POST
+      path: /api/boards
+  - httpApi:
+      method: GET
+      path: /api/boards
+  - httpApi:
+      method: GET
+      path: /api/boards/{boardId}
+  - httpApi:
+      method: PUT
+      path: /api/boards/{boardId}
+  - httpApi:
+      method: DELETE
+      path: /api/boards/{boardId}
